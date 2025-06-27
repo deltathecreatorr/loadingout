@@ -1,0 +1,10 @@
+
+basic tests with jest are announced with
+test("Unit Case", async() => {
+    expect(true result)
+});
+
+async testing is for when your code uses operations that don't complete immediately like network requests
+
+schema.path is a function that returns the instance of the schema for the given path
+see https://www.geeksforgeeks.org/mongoose-schematypes-schema-path-function/
