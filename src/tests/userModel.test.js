@@ -1,6 +1,6 @@
 //This file contains tests for creating the user model and checking it's properties.
 
-import User from "../models/userModel.js";
+import User from "@/models/userModel.js";
 
 test("User model should have the correct properties", () => {
   const user = new User({
