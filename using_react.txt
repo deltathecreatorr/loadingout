@@ -1,0 +1,44 @@
+react changes only what needs to be changed
+createRoot() is a function that takes one argument, an HTML element
+render() is called to define the react component that should be rendered
+
+react components are independent, reusable types of code. They serve the same purpose as javascript functions, but work in isolation and return HTML
+a component is made using a typescript/javascript class extending the React.Component class
+class Car extends React.Component{}
+components can be rendered using render()
+components can be passed as properties, like function arguments
+components can also reference other components
+
+class components can be created using a constructor and depending on the use of the class a super(); call to get the properties of the parent classes
+
+React class components have states where you can store property values that belong to the components
+states can be initialised in the constructor
+you can change the state of an object using the setState() method
+
+react components have a lifecycle where you can monitor and manipulate during it's three main phases
+Mounting,
+Updating,
+Unmounting
+
+Mounting - adding elements to the DOM
+ - constructor()
+ - render()
+ - componentDidMount() - called after the component is rendered
+ - getDerivedStateFromProps() - called right before rending the elements in the DOM, this is where the state should be set on the initial properties
+
+Updating
+ - getDerivedStateFromProps()
+ - shouldComponentUpdate() - return a boolean val that specifies whether react should continue with rendering or not
+ - render()
+ - getSnapshotBeforeUpdate() - you have access to state and properties before the update, also include the componentDidUpdate()
+ - componentDidUpdate()
+
+Unmounting - when a component is removed from the DOM
+ - componentWillUnmount()
+
+react can also perform actions based on user events such as click, mouseover
+
+react has lists where you can use map() to render a list of components
+react has keys that allow you to keep track of elements, if a item is updaed or removed, only that item will be re-rendered
+
+
