@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     sendMail({ email: user.email, emailType: "REST", userId: user._id });
 
     return NextResponse.json({
-      message: "Rest Link Send successfully",
+      message: "Reset Link Send successfully",
       success: true,
     });
   } catch (error: any) {

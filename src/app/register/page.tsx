@@ -5,10 +5,11 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter();
   const [user, setUser] = React.useState({
     email: "",
+    username: "",
     password: "",
   });
 
@@ -19,7 +20,8 @@ export default function LoginPage() {
     if (
       user.email.length > 0 &&
       user.password.length > 8 &&
-      /\d/.test(user.password)
+      /\d/.test(user.password) &&
+      user.username.length > 0
     ) {
       setButtonDisabled(false);
     } else {
@@ -34,17 +36,19 @@ export default function LoginPage() {
     });
   };
 
-  const onLogin = async () => {
+  const onRegister = async () => {
     try {
       setProcessing(true);
-      const userdata = await axios.post("/api/users/login", user);
+      const userdata = await axios.post("/api/users/register", user);
+      console.log(userdata.data);
       toast.success(userdata.data.message);
-      router.push("/profile");
+      // add 3 seconds delay
+      setTimeout(() => {
+        router.push("/login");
+      }, 3000);
     } catch (error: any) {
-      toast.error(
-        error.response.data.message || "An error occurred during login."
-      );
-      console.log(error);
+      console.log(error.message);
+      toast.error(error.message);
     } finally {
       setProcessing(false);
     }
@@ -55,7 +59,7 @@ export default function LoginPage() {
       <Toaster position="top-left" reverseOrder={false} />
       <div className="w-full max-w-xl bg-gradient-to-b from-black-900 to-purple-600 mx-auto mt-20 p-6 rounded-lg shadow-xl">
         <form className="space-y-8">
-          <h1 className="text-4xl text-black flex justify-center">Sign In</h1>
+          <h1 className="text-4xl text-black flex justify-center">Sign Up</h1>
           <div>
             <label htmlFor="email" className="block mb-2 text-2xl text-black">
               Email
@@ -67,6 +71,23 @@ export default function LoginPage() {
               onChange={handleInputChange}
               value={user.email}
               placeholder="youremail@example.com"
+              className="rounded bg-purple-500 w-full px-3 py-1 font-mono text-black"
+            ></input>
+          </div>
+          <div>
+            <label
+              htmlFor="username"
+              className="block mb-2 text-2xl text-black"
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              onChange={handleInputChange}
+              value={user.username}
+              placeholder="yourusername"
               className="rounded bg-purple-500 w-full px-3 py-1 font-mono text-black"
             ></input>
           </div>
@@ -91,25 +112,19 @@ export default function LoginPage() {
             <button
               type="button"
               className="bg-purple-500 hover:bg-purple-300 transition-colors duration-200 text-black text-xl py-2 px-4 rounded flex justify-center"
-              onClick={onLogin}
+              onClick={onRegister}
               disabled={buttonDisabled || processing}
             >
-              Login
+              Register
             </button>
           </div>
-          <div className="flex justify-between items-center font-mono text-sm">
+          <div className="flex justify-center items-center font-mono text-sm">
             <Link
-              href="/register"
-              className="text-blue-400 hover:text-purple-300 transition-colors duration-200 align-left"
+              href="/login"
+              className="text-blue-400 hover:text-purple-300 transition-colors duration-200"
             >
               {/* eslint-disable-next-line react/no-unescaped-entities */}
-              Don't have an account? Sign up
-            </Link>
-            <Link
-              href="/forgotpassword"
-              className="text-blue-400 hover:text-purple-300 transition-colors duration-200 align-right"
-            >
-              Forgot your password? Reset it
+              Have an account? Sign in
             </Link>
           </div>
         </form>

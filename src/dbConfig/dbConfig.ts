@@ -6,17 +6,17 @@ export async function connectToDatabase() {
   }
 
   try {
-    await mongoose.connect(process.env.MONGODB_URI!);
+    await mongoose.connect(process.env.MONGO_URL!);
     const connection = mongoose.connection;
     connection.on("connected", () => {
       console.log("MongoDB connected");
     });
 
     connection.on("error", (err: any) => {
-      console.error("MongoDB connection error:", err);
+      console.log("MongoDB connection error:", err);
     });
   } catch (error: any) {
-    console.error("MongoDB connection error:", error);
+    console.log("MongoDB connection error:", error);
     throw new Error(
       "Failed to connect to the database. Please check your MONGODB_URL and network access."
     );

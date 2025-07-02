@@ -17,7 +17,7 @@ export default function Navbar({ isVerified }: { isVerified: boolean }) {
 
   return (
     <nav
-      className="block w-full max-w-screen px-4 py-4 mx-auto bg-white bg-opacity-10 position-fixed top-0 left-0 z-50 menu-toggle"
+      className="w-full max-w-screen px-4 py-4 mx-auto flex top-0 left-0 z-50 menu-toggle justify-center"
       onClick={toggleMenu}
     >
       <button className="menu-toggle" onClick={toggleMenu}>
@@ -28,7 +28,7 @@ export default function Navbar({ isVerified }: { isVerified: boolean }) {
           <Link
             key={item}
             href={`/${item.toLowerCase()}`}
-            className="mx-2 text-purple-500 hover:text-gray-300"
+            className="text-3xl mx-2 text-black hover:text-gray-300 transition-colors duration-200"
           >
             {item}
           </Link>
