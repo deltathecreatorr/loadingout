@@ -10,7 +10,7 @@ module.exports = {
   // Use ts-jest to transform TypeScript files
   transform: {
     "^.+\\.tsx?$": "ts-jest",
-    "^.+\\.jsx?$": "babel-jest",
+    "^.+\\.jsx?$": ["babel-jest", { configFile: "./babel.config.jest.js" }],
   },
 
   // Regular expression to find test files
