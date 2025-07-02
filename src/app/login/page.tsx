@@ -42,7 +42,6 @@ export default function LoginPage() {
     // flex direction column, justify center, min height screen, black background, padding y-axis 12
     <div className="flex flex-col justify-center min-h-screen bg-gradient-to-t from-black to-purple-600 py-12">
       <Toaster position="top-left" reverseOrder={false} />
-      <div></div>
     </div>
   );
 }

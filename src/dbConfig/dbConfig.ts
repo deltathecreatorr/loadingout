@@ -18,7 +18,7 @@ export async function connectToDatabase() {
   } catch (error: any) {
     console.error("MongoDB connection error:", error);
     throw new Error(
-      "Failed to connect to the database. Please check your MONGODB_URI and network access."
+      "Failed to connect to the database. Please check your MONGODB_URL and network access."
     );
   }
 }

@@ -26,6 +26,8 @@ export async function POST(request: NextRequest) {
         id: user._id,
         email: user.email,
         username: user.username,
+        isVerified: user.isVerified,
+        isAdmin: user.isAdmin,
       };
 
       // Sign the token with a secret key and expiration date

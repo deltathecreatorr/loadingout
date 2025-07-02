@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 export async function GET() {
   try {
     const response = NextResponse.json({
-      Message: "Logout successful",
+      message: "Logout successful",
       success: true,
     });
     // Clear token cookie by setting it as empty
