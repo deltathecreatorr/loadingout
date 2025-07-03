@@ -36,26 +36,22 @@ export default function VerifyEmail() {
   }, [token]);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-green-400 to-blue-500 py-12">
-      <div className="bg-white p-10 rounded-lg shadow-lg w-full max-w-md text-center">
-        <h1 className="text-2xl font-bold text-indigo-600 mb-4">
-          Email Verification
-        </h1>
+    <div className="flex flex-col max-w-xl bg-gradient-to-b from-black-900 to-purple-600 mx-auto mt-20 p-6 rounded-lg text-center">
+      <h1 className="text-2xl text-black mb-4">Email Verification</h1>
 
-        {loading ? (
-          <p className="text-lg text-gray-700">Verifying your email...</p>
-        ) : verified ? (
-          <p className="text-lg text-green-600 font-semibold">
-            Your email has been verified successfully! You can now log in.
-          </p>
-        ) : error ? (
-          <p className="text-lg text-red-600 font-semibold">
-            Verification failed. Please try again or contact support.
-          </p>
-        ) : (
-          <p className="text-lg text-gray-500">Invalid verification request.</p>
-        )}
-      </div>
+      {loading ? (
+        <p className="text-lg text-black">Verifying your email...</p>
+      ) : verified ? (
+        <p className="text-lg text-green-600">
+          Your email has been verified successfully! You can now log in.
+        </p>
+      ) : error ? (
+        <p className="text-lg text-red-600">
+          Verification failed. Please try again or contact support.
+        </p>
+      ) : (
+        <p className="text-lg text-black">Invalid verification request.</p>
+      )}
     </div>
   );
 }
