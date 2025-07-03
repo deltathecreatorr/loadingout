@@ -1,8 +1,6 @@
 import { connectToDatabase } from "@/dbConfig/dbConfig";
 import User from "@/models/userModel";
 import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { sendMail } from "@/helpers/mailer";
 
 connectToDatabase();
@@ -20,7 +18,7 @@ export async function POST(request: NextRequest) {
     sendMail({ email: user.email, emailType: "REST", userId: user._id });
 
     return NextResponse.json({
-      message: "Rest Link Send successfully",
+      message: "Reset Link Send successfully",
       success: true,
     });
   } catch (error: any) {

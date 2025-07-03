@@ -49,8 +49,10 @@ export default async function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Navbar isVerified={isUserVerified} />
-        {children}
+        <div className="min-h-screen bg-gradient-to-t from-black to-purple-600">
+          <Navbar isVerified={isUserVerified} />
+          {children}
+        </div>
       </body>
     </html>
   );
