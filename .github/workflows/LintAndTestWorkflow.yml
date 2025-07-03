@@ -2,9 +2,6 @@ name: Lint and Test Workflow
 
 on:
   pull_request:
-    branches:
-      - dev
-      - master
 
 jobs:
   lint-and-test:
