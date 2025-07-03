@@ -55,8 +55,10 @@ describe("sendMail", () => {
 
     // Check that the nodemailer transport was created with the correct config
     expect(mockedNodemailer.createTransport).toHaveBeenCalledWith({
+      service: "Gmail",
       host: process.env.SMTP_HOST,
-      port: 587,
+      port: parseInt(process.env.SMTP_PORT as string, 10),
+      secure: true,
       auth: {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASS,
