@@ -19,8 +19,17 @@
   }
 }
 
+.pixel-font {
+  font-family: PixelFont, sans-serif;
+}
+
+@font-face {
+  font-family: PixelFont;
+  src: url("../../public/fonts/ThaleahFat.ttf") format("truetype");
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: PixelFont, Arial, Helvetica, sans-serif;
 }
