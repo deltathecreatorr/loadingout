@@ -49,6 +49,7 @@ export async function POST(request: NextRequest) {
       );
     }
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

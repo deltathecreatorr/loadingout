@@ -8,8 +8,8 @@ import toast, { Toaster } from "react-hot-toast";
 export default function RegisterPage() {
   const router = useRouter();
   const [user, setUser] = React.useState({
-    email: "",
     username: "",
+    email: "",
     password: "",
   });
 

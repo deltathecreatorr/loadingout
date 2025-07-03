@@ -12,6 +12,7 @@ export async function POST(req: NextRequest) {
 
     // Find the user with the token and ensure the token is still valid (not expired)
     const user = await User.findOne({
+      isVerified: false,
       verifyToken: token,
       verifyTokenExpiry: { $gt: currentTime }, // Check if verifyTokenExpiry is greater than currentTime
     });
@@ -24,7 +25,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Update the user's verification status
-    user.isverified = true;
+    user.isVerified = true;
     user.verifyToken = undefined;
     user.verifyTokenExpiry = undefined;
     await user.save();
