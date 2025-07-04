@@ -36,7 +36,7 @@ export default function VerifyEmail() {
   }, [token]);
 
   return (
-    <div className="flex flex-col max-w-xl bg-gradient-to-b from-black-900 to-purple-600 mx-auto mt-20 p-6 rounded-lg text-center">
+    <div className="flex flex-col max-h-screen max-w-xl bg-gradient-to-b from-black-900 to-purple-600 mx-auto p-6 rounded-lg text-center justify-center">
       <h1 className="text-2xl text-black mb-4">Email Verification</h1>
 
       {loading ? (

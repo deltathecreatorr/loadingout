@@ -24,15 +24,18 @@ export default function Navbar({ isVerified }: { isVerified: boolean }) {
         <span className={`menu ${isMenuOpen ? "cross" : "hamburger"}`}></span>
       </button>
       <ul className="menu-links">
-        {navbarItems.map((item) => (
-          <Link
-            key={item}
-            href={`/${item.toLowerCase()}`}
-            className="text-3xl mx-2 text-black hover:text-gray-300 transition-colors duration-200"
-          >
-            {item}
-          </Link>
-        ))}
+        {navbarItems.map((item) => {
+          const hreftext = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+          return (
+            <Link
+              key={item}
+              href={hreftext}
+              className="text-3xl mx-2 text-black hover:text-gray-300 transition-colors duration-200"
+            >
+              {item}
+            </Link>
+          );
+        })}
       </ul>
     </nav>
   );
