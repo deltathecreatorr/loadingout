@@ -25,7 +25,7 @@ export default function Navbar({ isVerified }: { isVerified: boolean }) {
       </button>
       <ul className="menu-links">
         {navbarItems.map((item) => {
-          const hreftext = item === "Home" ? "/" : `/${item.toLowerCase()}`;
+          const hreftext = `/${item.toLowerCase()}`;
           return (
             <Link
               key={item}
