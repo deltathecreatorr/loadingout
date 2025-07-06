@@ -4,14 +4,19 @@ import React from "react";
 import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { useState } from "react";
+import * as EmailValidator from "email-validator";
 
 export default function ForgotPassword() {
   const [email, setEmail] = useState<string>("");
 
   const handleSubmit = async () => {
     try {
-      const res = await axios.post("/api/users/forgotpassword", { email });
-      toast.success(res.data.message);
+      if (EmailValidator.validate(email)) {
+        const res = await axios.post("/api/users/forgotpassword", { email });
+        toast.success(res.data.message);
+      } else {
+        toast.error("Invalid email address");
+      }
     } catch (error: any) {
       if (error.response) {
         toast.error(error.response.data.error || "An error occurred");

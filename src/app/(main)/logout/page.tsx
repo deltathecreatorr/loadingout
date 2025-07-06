@@ -12,6 +12,7 @@ export default function Logout() {
   const [error, setError] = React.useState(false);
   const router = useRouter();
 
+  //call logout function onClick
   const onLogout = async () => {
     setProcessing(true);
     setButtonDisabled(true);
@@ -54,6 +55,7 @@ export default function Logout() {
             type="button"
             className="bg-purple-500 hover:bg-purple-300 transition-colors duration-200 text-black text-xl py-2 px-4 rounded flex justify-center"
             onClick={onLogout}
+            // make sure button is disabled by wiping tokens and user data from client
             disabled={buttonDisabled || processing}
           >
             Logout

@@ -12,6 +12,7 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [token, setToken] = useState("");
 
+  //search URL for the token that can only be received from nodemailer
   useEffect(() => {
     const urlToken = new URLSearchParams(window.location.search).get("token");
     console.log(urlToken);

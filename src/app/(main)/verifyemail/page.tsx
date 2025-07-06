@@ -11,6 +11,7 @@ export default function VerifyEmail() {
 
   const VerifyUserEmail = async () => {
     try {
+      // user token from email sent from nodemailer
       const res = await axios.post("api/users/verifyemail", { token });
       console.log(res.data);
       toast.success(res.data.message);
@@ -23,6 +24,7 @@ export default function VerifyEmail() {
     }
   };
 
+  //search the URL for the token
   useEffect(() => {
     const params = window.location.search.split("=")[1];
     setToken(params || "");
