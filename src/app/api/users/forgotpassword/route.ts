@@ -15,13 +15,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    sendMail({ email: user.email, emailType: "REST", userId: user._id });
+    await sendMail({ email: user.email, emailType: "RESET", userId: user._id });
 
     return NextResponse.json({
       message: "Reset Link Send successfully",
       success: true,
     });
   } catch (error: any) {
+    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -9,9 +9,10 @@ export async function POST(req: NextRequest) {
   try {
     const reqBody = await req.json();
     const { token, password } = reqBody;
-    const currentTime = new Date(); // Current time
+    const currentTime = Date.now(); // Current time
 
     // Find the user with the token and ensure the token is still valid (not expired)
+
     const user = await User.findOne({
       forgotpasswordToken: token,
       forgotpasswordTokenExpiry: { $gt: currentTime }, // Check if verifyTokenExpiry is greater than currentTime

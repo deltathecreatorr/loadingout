@@ -1,53 +1,23 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import axios from "axios";
-import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import { useState } from "react";
 
 export default function ForgotPassword() {
-  const router = useRouter();
-  const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const [processing, setProcessing] = React.useState(false);
+  const [email, setEmail] = useState<string>("");
 
-  const [forgotUser, setforgotUser] = React.useState({
-    email: "",
-  });
-
-  useEffect(() => {
-    if (
-      forgotUser.email.length > 0 &&
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(forgotUser.email)
-    ) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
-    }
-  }, [forgotUser]);
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setforgotUser({
-      ...forgotUser,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const onForgotPassword = async () => {
+  const handleSubmit = async () => {
     try {
-      setProcessing(true);
-      const forgotdata = await axios.post(
-        "/api/users/forgotpassword",
-        forgotUser
-      );
-      setButtonDisabled(true);
-      toast.success(forgotdata.data.message);
-      setTimeout(() => {
-        router.push("/resetpassword");
-      }, 3000);
+      const res = await axios.post("/api/users/forgotpassword", { email });
+      toast.success(res.data.message);
     } catch (error: any) {
-      toast.error("An error occurred during this process", error);
-    } finally {
-      setProcessing(false);
+      if (error.response) {
+        toast.error(error.response.data.error || "An error occurred");
+      } else {
+        toast.error("An error occurred");
+      }
     }
   };
 
@@ -65,10 +35,8 @@ export default function ForgotPassword() {
             </label>
             <input
               type="email"
-              name="email"
-              id="email"
-              onChange={handleInputChange}
-              value={forgotUser.email}
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
               placeholder="youremail@example.com"
               className="rounded bg-purple-500 w-full px-3 py-1 font-mono text-black"
             ></input>
@@ -78,8 +46,8 @@ export default function ForgotPassword() {
             <button
               type="button"
               className="bg-purple-500 hover:bg-purple-300 transition-colors duration-200 text-black text-xl py-2 px-4 rounded flex justify-center"
-              onClick={onForgotPassword}
-              disabled={buttonDisabled || processing}
+              onClick={handleSubmit}
+              disabled={!email}
             >
               Send Reset Link
             </button>

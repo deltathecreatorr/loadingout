@@ -1,52 +1,71 @@
 "use client";
 
-import React, { useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 
-export default function ForgotPassword() {
+export default function ResetPasswordPage() {
   const router = useRouter();
-  const [buttonDisabled, setButtonDisabled] = React.useState(true);
-  const [processing, setProcessing] = React.useState(false);
-
-  const [resetUser, setResetUser] = React.useState({
-    resetPassword: "",
-  });
+  const [password, setPassword] = useState("");
+  const [confirmpassword, setConfirmPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [token, setToken] = useState("");
 
   useEffect(() => {
-    if (
-      resetUser.resetPassword.length > 8 &&
-      /\d/.test(resetUser.resetPassword)
-    ) {
-      setButtonDisabled(false);
-    } else {
-      setButtonDisabled(true);
+    const urlToken = new URLSearchParams(window.location.search).get("token");
+    console.log(urlToken);
+    setToken(urlToken || "");
+    if (!urlToken) {
+      toast.error("Invalid reset request");
     }
-  }, [resetUser]);
+  }, []);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setResetUser({
-      ...resetUser,
-      [e.target.name]: e.target.value,
-    });
-  };
+  const handleResetPassword = async () => {
+    if (password !== confirmpassword) {
+      toast.error("Passwords don't match");
+      return;
+    }
 
-  const onResetPassword = async () => {
+    if (password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return;
+    }
+
+    if (!/\d/.test(password)) {
+      toast.error("Password must contain at least one number");
+      return;
+    }
+
     try {
-      setProcessing(true);
-      const resetdata = await axios.post("/api/users/resetpassword", resetUser);
-      setButtonDisabled(true);
-      toast.success(resetdata.data.message);
-      setTimeout(() => {
-        router.push("/login");
-      }, 3000);
+      setLoading(true);
+      const response = await axios.post("/api/users/resetpassword", {
+        token,
+        password,
+      });
+
+      if (response.data.success) {
+        toast.success("Password reset successfully!");
+        setTimeout(() => router.push("/login"), 2000);
+      } else {
+        throw new Error(response.data.error || "Password reset failed");
+      }
     } catch (error: any) {
-      toast.error("An error occurred during this process", error);
+      const errorMessage =
+        error.response?.data?.error ||
+        error.message ||
+        "Failed to reset password";
+      toast.error(errorMessage);
+
+      // If token is invalid, redirect after showing error
+      if (error.response?.status === 400) {
+        setTimeout(() => router.push("/forgotpassword"), 3000);
+      }
     } finally {
-      setProcessing(false);
+      setLoading(false);
     }
   };
+
   return (
     <div>
       <Toaster position="top-left" reverseOrder={false} />
@@ -66,8 +85,8 @@ export default function ForgotPassword() {
               type="password"
               name="password"
               id="password"
-              value={resetUser.resetPassword}
-              onChange={handleInputChange}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••••••••••"
               className="rounded bg-purple-500 w-full px-3 py-1 font-mono text-black"
             ></input>
@@ -75,17 +94,17 @@ export default function ForgotPassword() {
 
           <div>
             <label
-              htmlFor="password"
+              htmlFor="confirmpassword"
               className="block mb-2 text-2xl text-black"
             >
               Confirm Password
             </label>
             <input
               type="password"
-              name="password"
-              id="password"
-              value={resetUser.resetPassword}
-              onChange={handleInputChange}
+              name="confirmpassword"
+              id="confirmpassword"
+              value={confirmpassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
               placeholder="••••••••••••••••"
               className="rounded bg-purple-500 w-full px-3 py-1 font-mono text-black"
             ></input>
@@ -95,10 +114,10 @@ export default function ForgotPassword() {
             <button
               type="button"
               className="bg-purple-500 hover:bg-purple-300 transition-colors duration-200 text-black text-xl py-2 px-4 rounded flex justify-center"
-              onClick={onResetPassword}
-              disabled={buttonDisabled || processing}
+              onClick={handleResetPassword}
+              disabled={loading}
             >
-              Reset Password
+              {loading ? "Processing..." : "Reset Password"}
             </button>
           </div>
         </form>

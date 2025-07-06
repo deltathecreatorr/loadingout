@@ -7,22 +7,19 @@ connectToDatabase();
 
 export async function sendMail({ email, emailType, userId }: any) {
   const hashedToken = await bcrypt.hash(userId.toString(), 10);
-  const currentTime = new Date();
-  const expiryTime = new Date(currentTime.getTime() + 3600000); // 1 hour from now
 
-  console.log("Current time:", currentTime);
-  console.log("Expiry time:", expiryTime);
+  const tokenExpiry = Date.now() + 3600000;
 
   try {
-    if (emailType === "REST") {
+    if (emailType === "RESET") {
       await User.findByIdAndUpdate(userId, {
         forgotpasswordToken: hashedToken,
-        forgotpasswordTokenExpiry: expiryTime,
+        forgotpasswordTokenExpiry: tokenExpiry,
       });
     } else if (emailType === "VERIFY") {
       await User.findByIdAndUpdate(userId, {
         verifyToken: hashedToken,
-        verifyTokenExpiry: expiryTime,
+        verifyTokenExpiry: tokenExpiry,
       });
     }
   } catch (error: any) {
@@ -43,14 +40,14 @@ export async function sendMail({ email, emailType, userId }: any) {
   const mailOptions = {
     from: process.env.SENDER_EMAIL,
     to: email,
-    subject: emailType === "REST" ? "Reset Password" : "Verify Email",
+    subject: emailType === "RESET" ? "Reset Password" : "Verify Email",
     html: `<p>Click <a href="http://localhost:3000/${
-      emailType === "REST" ? "resetpassword" : "verifyemail"
+      emailType === "RESET" ? "resetpassword" : "verifyemail"
     }?token=${hashedToken}">here</a> to ${
-      emailType === "REST" ? "reset your password" : "verify your email"
+      emailType === "RESET" ? "reset your password" : "verify your email"
     }</p>
                <p>http://localhost:3000/${
-                 emailType === "REST" ? "resetpassword" : "verifyemail"
+                 emailType === "RESET" ? "resetpassword" : "verifyemail"
                }?token=${hashedToken}</p>`,
   };
 
