@@ -126,7 +126,6 @@ export default function RegisterPage() {
               href="/login"
               className="text-blue-400 hover:text-purple-300 transition-colors duration-200"
             >
-              {/* eslint-disable-next-line react/no-unescaped-entities */}
               Have an account? Sign in
             </Link>
           </div>
