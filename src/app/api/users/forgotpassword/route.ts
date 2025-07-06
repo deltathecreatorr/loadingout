@@ -4,9 +4,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { sendMail } from "@/helpers/mailer";
 
 connectToDatabase();
-
+//API route to search for email in database and send mail if user has forgotten password
 export async function POST(request: NextRequest) {
   try {
+    //request recieved would be JSON body of email from the forgotpassword page.tsx
     const reqBody = await request.json();
     const { email } = reqBody;
     console.log(email);

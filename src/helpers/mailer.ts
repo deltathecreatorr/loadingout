@@ -5,6 +5,8 @@ import nodemailer from "nodemailer";
 
 connectToDatabase();
 
+//use nodemailer to send email to users that sign up with their email
+//the type of email to send is either RESET or VERIFY
 export async function sendMail({ email, emailType, userId }: any) {
   const hashedToken = await bcrypt.hash(userId.toString(), 10);
 
@@ -26,6 +28,7 @@ export async function sendMail({ email, emailType, userId }: any) {
     throw new Error(error.message);
   }
 
+  //nodemailer create a sender using the email provided
   const transport = nodemailer.createTransport({
     service: "Gmail",
     host: process.env.SMTP_HOST,

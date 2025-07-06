@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 
+//API request ot logout, wipe client cookie
 export async function GET() {
   try {
     const response = NextResponse.json({

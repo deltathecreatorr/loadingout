@@ -5,8 +5,10 @@ import bcrypt from "bcryptjs";
 
 connectToDatabase();
 
+//API route to reset password, only reset password if token si valid from user database
 export async function POST(req: NextRequest) {
   try {
+    //json body containing password and token from url
     const reqBody = await req.json();
     const { token, password } = reqBody;
     const currentTime = Date.now(); // Current time

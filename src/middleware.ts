@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
+//middleware between server and client to control where user can access depending on if they're logged or not
 export function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname; // Get the path from the url request
 

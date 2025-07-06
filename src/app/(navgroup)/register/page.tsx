@@ -17,6 +17,7 @@ export default function RegisterPage() {
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const [processing, setProcessing] = React.useState(false);
 
+  //validate email before checking if the button can be activated to submit to server
   useEffect(() => {
     if (
       user.email.length > 0 &&
