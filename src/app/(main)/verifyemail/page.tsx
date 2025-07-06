@@ -11,6 +11,7 @@ export default function VerifyEmail() {
 
   const VerifyUserEmail = async () => {
     try {
+      // user token from email sent from nodemailer
       const res = await axios.post("api/users/verifyemail", { token });
       console.log(res.data);
       toast.success(res.data.message);
@@ -23,6 +24,7 @@ export default function VerifyEmail() {
     }
   };
 
+  //search the URL for the token
   useEffect(() => {
     const params = window.location.search.split("=")[1];
     setToken(params || "");
@@ -36,7 +38,7 @@ export default function VerifyEmail() {
   }, [token]);
 
   return (
-    <div className="flex flex-col max-w-xl bg-gradient-to-b from-black-900 to-purple-600 mx-auto mt-20 p-6 rounded-lg text-center">
+    <div className="flex flex-col max-h-screen max-w-xl bg-gradient-to-b from-black-900 to-purple-600 mx-auto p-6 rounded-lg text-center justify-center">
       <h1 className="text-2xl text-black mb-4">Email Verification</h1>
 
       {loading ? (

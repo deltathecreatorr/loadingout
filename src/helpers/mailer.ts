@@ -5,30 +5,30 @@ import nodemailer from "nodemailer";
 
 connectToDatabase();
 
+//use nodemailer to send email to users that sign up with their email
+//the type of email to send is either RESET or VERIFY
 export async function sendMail({ email, emailType, userId }: any) {
   const hashedToken = await bcrypt.hash(userId.toString(), 10);
-  const currentTime = new Date();
-  const expiryTime = new Date(currentTime.getTime() + 3600000); // 1 hour from now
 
-  console.log("Current time:", currentTime);
-  console.log("Expiry time:", expiryTime);
+  const tokenExpiry = Date.now() + 3600000;
 
   try {
-    if (emailType === "REST") {
+    if (emailType === "RESET") {
       await User.findByIdAndUpdate(userId, {
         forgotpasswordToken: hashedToken,
-        forgotpasswordTokenExpiry: expiryTime,
+        forgotpasswordTokenExpiry: tokenExpiry,
       });
     } else if (emailType === "VERIFY") {
       await User.findByIdAndUpdate(userId, {
         verifyToken: hashedToken,
-        verifyTokenExpiry: expiryTime,
+        verifyTokenExpiry: tokenExpiry,
       });
     }
   } catch (error: any) {
     throw new Error(error.message);
   }
 
+  //nodemailer create a sender using the email provided
   const transport = nodemailer.createTransport({
     service: "Gmail",
     host: process.env.SMTP_HOST,
@@ -43,14 +43,14 @@ export async function sendMail({ email, emailType, userId }: any) {
   const mailOptions = {
     from: process.env.SENDER_EMAIL,
     to: email,
-    subject: emailType === "REST" ? "Reset Password" : "Verify Email",
+    subject: emailType === "RESET" ? "Reset Password" : "Verify Email",
     html: `<p>Click <a href="http://localhost:3000/${
-      emailType === "REST" ? "resetpassword" : "verifyemail"
+      emailType === "RESET" ? "resetpassword" : "verifyemail"
     }?token=${hashedToken}">here</a> to ${
-      emailType === "REST" ? "reset your password" : "verify your email"
+      emailType === "RESET" ? "reset your password" : "verify your email"
     }</p>
                <p>http://localhost:3000/${
-                 emailType === "REST" ? "resetpassword" : "verifyemail"
+                 emailType === "RESET" ? "resetpassword" : "verifyemail"
                }?token=${hashedToken}</p>`,
   };
 

@@ -50,7 +50,7 @@ describe("sendMail", () => {
     //Check that the user model was updated with the right token and expiry
     expect(mockedUser.findByIdAndUpdate).toHaveBeenCalledWith(options.userId, {
       verifyToken: "hashed-token-from-mock",
-      verifyTokenExpiry: expect.any(Date),
+      verifyTokenExpiry: expect.any(Number),
     });
 
     // Check that the nodemailer transport was created with the correct config
@@ -84,7 +84,7 @@ describe("sendMail", () => {
   it("should send a password reset email correctly", async () => {
     const options = {
       email: "reset@example.com",
-      emailType: "REST" as const,
+      emailType: "RESET" as const,
       userId: "user-id-456",
     };
 
@@ -92,7 +92,7 @@ describe("sendMail", () => {
 
     expect(mockedUser.findByIdAndUpdate).toHaveBeenCalledWith(options.userId, {
       forgotpasswordToken: "hashed-token-from-mock",
-      forgotpasswordTokenExpiry: expect.any(Date),
+      forgotpasswordTokenExpiry: expect.any(Number),
     });
 
     const sendMailMock = (mockedNodemailer.createTransport as jest.Mock).mock

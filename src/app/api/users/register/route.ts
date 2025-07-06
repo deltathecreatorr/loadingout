@@ -6,8 +6,10 @@ import { sendMail } from "@/helpers/mailer";
 
 connectToDatabase();
 
+//API route to add a new user to the database from the register frontend page
 export async function POST(request: NextRequest) {
   try {
+    //json body of email and password from register page
     const reqBody = await request.json();
     const { username, email, password } = reqBody;
     console.log(reqBody);
@@ -29,8 +31,10 @@ export async function POST(request: NextRequest) {
 
     const newUser = new User({ username, email, password: hashedpassword });
 
+    //add new user to the database
     const savedUser = await newUser.save();
 
+    //send an email to user to verify their email afterwards
     await sendMail({
       email: email,
       emailType: "VERIFY",

@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import * as EmailValidator from "email-validator";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,7 +18,8 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (
-      user.email.length > 0 &&
+      // check if user email is valid, check if user password fits requirements
+      EmailValidator.validate(user.email) &&
       user.password.length > 8 &&
       /\d/.test(user.password)
     ) {
@@ -39,6 +41,7 @@ export default function LoginPage() {
       setProcessing(true);
       const userdata = await axios.post("/api/users/login", user);
       toast.success(userdata.data.message);
+      //push to profile after login
       router.push("/profile");
     } catch (error: any) {
       toast.error(

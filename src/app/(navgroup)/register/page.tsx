@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
+import * as EmailValidator from "email-validator";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -16,9 +17,11 @@ export default function RegisterPage() {
   const [buttonDisabled, setButtonDisabled] = React.useState(true);
   const [processing, setProcessing] = React.useState(false);
 
+  //validate email before checking if the button can be activated to submit to server
   useEffect(() => {
     if (
       user.email.length > 0 &&
+      EmailValidator.validate(user.email) &&
       user.password.length > 8 &&
       /\d/.test(user.password) &&
       user.username.length > 0

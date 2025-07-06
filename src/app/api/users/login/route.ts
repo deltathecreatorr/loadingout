@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (await bcrypt.compare(password, user.password)) {
-      //create token
+      //compare the password hash and the hash of the user password from login request
 
       const tokenData = {
         id: user._id,

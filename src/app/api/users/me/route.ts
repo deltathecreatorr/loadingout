@@ -5,6 +5,7 @@ import { getTokenData } from "@/helpers/gettokendata";
 
 connectToDatabase();
 
+//API request to get user information, by searching for unique user id
 export async function GET(request: NextRequest) {
   try {
     const userid = await getTokenData(request);

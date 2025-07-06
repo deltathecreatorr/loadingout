@@ -1,9 +1,10 @@
+"use client";
 import React from "react";
 import { Toaster } from "react-hot-toast";
 
-export default function Home() {
+export default function Games() {
   return (
-    <main className="flex flex-col justify-center min-h-screen bg-gradient-to-t from-black to-purple-600 py-12">
+    <main className="flex flex-col">
       <Toaster position="top-left" reverseOrder={false} />
       <div></div>
     </main>
