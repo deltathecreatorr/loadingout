@@ -10,8 +10,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "apicalypse": "^1.0.5",
     "axios": "^1.10.0",
     "bcryptjs": "^3.0.2",
+    "daisyui": "^5.0.46",
     "email-validator": "^2.0.4",
     "jsonwebtoken": "^9.0.2",
     "next": "15.3.2",

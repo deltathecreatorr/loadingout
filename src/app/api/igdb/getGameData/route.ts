@@ -1,34 +1,42 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
 
-export async function POST() {
-  const clientID = process.env.IGDB_CLIENT_ID;
-  const accessToken = process.env.IGDB_CLIENT_SECRET;
+export async function POST(req: Request) {
+  const client_id = process.env.IGDB_CLIENT_ID;
+  const client_secret = process.env.IGDB_CLIENT_SECRET;
 
   try {
-    if (!clientID || !accessToken) {
-      return NextResponse.json(
-        { error: "IGDB credentials missing" },
-        { status: 500 }
-      );
-    }
+    const { query } = await req.json();
 
-    const query =
-      "fields name, cover.url; limit 20; sort popularity desc; where total_rating_count > 100 & cover.url != null;";
+    const authResponse = await axios.post(
+      `https://id.twitch.tv/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`
+    );
+    const accessToken = authResponse.data.access_token;
 
     const response = await axios.post("https://api.igdb.com/v4/games", query, {
       headers: {
-        Accept: "application/json",
-        "Client-ID": clientID,
+        "Client-ID": client_id,
         Authorization: `Bearer ${accessToken}`,
+        Accept: "application/json",
       },
     });
 
-    return NextResponse.json(response.data);
+    const games = response.data.map((game: any) => ({
+      ...game,
+      cover: {
+        url: game.cover?.url
+          ? `${game.cover.url.replace("t_thumb", "t_1080p")}`
+          : null,
+      },
+    }));
+
+    return NextResponse.json({
+      games,
+      accessToken,
+      expiresIn: authResponse.data.expires_in,
+    });
   } catch (error: any) {
-    return NextResponse.json(
-      { error: error.message },
-      { status: error.response?.status || 500 }
-    );
+    console.error("IGDB API Error:", error.response?.data || error.message);
+    return NextResponse.json({ error: error.message });
   }
 }
