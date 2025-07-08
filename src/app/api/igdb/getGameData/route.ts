@@ -1,19 +1,21 @@
 import axios from "axios";
 import { NextResponse } from "next/server";
+import Game from "@/models/gameModel";
 
-export async function POST(req: Request) {
+const url = "https://api.igdb.com/v4/games";
+const query = "fields *;";
+
+export async function POST() {
   const client_id = process.env.IGDB_CLIENT_ID;
   const client_secret = process.env.IGDB_CLIENT_SECRET;
 
   try {
-    const { query } = await req.json();
-
     const authResponse = await axios.post(
       `https://id.twitch.tv/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`
     );
     const accessToken = authResponse.data.access_token;
 
-    const response = await axios.post("https://api.igdb.com/v4/games", query, {
+    const response = await axios.post(url, query, {
       headers: {
         "Client-ID": client_id,
         Authorization: `Bearer ${accessToken}`,
