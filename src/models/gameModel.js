@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const gameSchema = new mongoose.Schema(
   {
-    igdbID: { type: Number, required: true, unique: true },
+    id: { type: Number, required: true, unique: true },
     name: { type: String, required: true },
     summary: String,
     rating: Number,
@@ -14,6 +14,6 @@ const gameSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Game = mongoose.models.Game || mongoose.model("Game", gameSchema);
+const Game = mongoose.models.Game || mongoose.model("games", gameSchema);
 
 export default Game;
