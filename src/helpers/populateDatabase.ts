@@ -3,7 +3,7 @@ import Game from "@/models/gameModel.js";
 import { connectToDatabase } from "@/dbConfig/dbConfig";
 import "dotenv/config";
 import mongoose from "mongoose";
-
+import { getAccessToken } from "./getAccessToken";
 // Copying all the games form the IGDB database to MongoDB
 // Recommended by IGDB to copy the database and then setup webhooks to keep the database updated
 
@@ -13,14 +13,8 @@ const url = "https://api.igdb.com/v4/games";
 
 export async function populateDatabase() {
   const client_id = process.env.IGDB_CLIENT_ID;
-  const client_secret = process.env.IGDB_CLIENT_SECRET;
-
   try {
-    const authResponse = await axios.post(
-      `https://id.twitch.tv/oauth2/token?client_id=${client_id}&client_secret=${client_secret}&grant_type=client_credentials`
-    );
-    console.log("Authentication successful, fetching games...");
-    const accessToken = authResponse.data.access_token;
+    const accessToken = await getAccessToken();
 
     let game_counter_id = 0;
     let running = true;

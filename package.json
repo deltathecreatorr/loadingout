@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "populate": "tsx src/helpers/populateDatabase.ts"
+    "populate": "tsx src/helpers/populateDatabase.ts",
+    "connect": "tsx src/helpers/connectWebhook.ts"
   },
   "dependencies": {
     "agenda": "^5.0.0",
