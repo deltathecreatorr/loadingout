@@ -1,8 +1,11 @@
 import axios from "axios";
-import { NextResponse } from "next/server";
 import Game from "@/models/gameModel.js";
 import { connectToDatabase } from "@/dbConfig/dbConfig";
 import "dotenv/config";
+import mongoose from "mongoose";
+
+// Copying all the games form the IGDB database to MongoDB
+// Recommended by IGDB to copy the database and then setup webhooks to keep the database updated
 
 connectToDatabase();
 
@@ -26,7 +29,7 @@ export async function populateDatabase() {
 
     // Fetch games in batches of 500 until no more games are available
     while (running) {
-      const query = `fields age_ratings,aggregated_rating,aggregated_rating_count,alternative_names,artworks,bundles,category,checksum,collection,collections,cover,created_at,dlcs,expanded_games,expansions,external_games,first_release_date,follows,forks,franchise,franchises,game_engines,game_localizations,game_modes,game_status,game_type,genres,hypes,involved_companies,keywords,language_supports,multiplayer_modes,name,parent_game,platforms,player_perspectives,ports,rating,rating_count,release_dates,remakes,remasters,screenshots,similar_games,slug,standalone_expansions,status,storyline,summary,tags,themes,total_rating,total_rating_count,updated_at,url,version_parent,version_title,videos,websites; limit 25; sort id asc; where id > ${game_counter_id}`;
+      const query = `fields *; limit 500; sort id asc; where id > ${game_counter_id};`;
 
       // POST request to IGDB API to fetch games
       const response = await axios.post(url, query, {
@@ -61,12 +64,16 @@ export async function populateDatabase() {
         }
       }
     }
-    return NextResponse.json({
-      message: `The amount of games processed is ${gamesProcessed}`,
-    });
+    if (running === false) {
+      console.log(
+        `All games processed. Total games added/updated: ${gamesProcessed}`
+      );
+      await mongoose.connection.close(); // Close the database connection
+      return;
+    }
   } catch (error: any) {
     console.error("Error fetching game data:", error);
-    return NextResponse.json({ error: "Failed to fetch game data" });
+    return { error: "Failed to fetch game data" };
   }
 }
 
