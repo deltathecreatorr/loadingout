@@ -2,26 +2,19 @@ import axios from "axios";
 import "dotenv/config";
 import { getAccessToken } from "./getAccessToken";
 
-const url = "https://api.igdb.com/v4/games/webhooks";
+const url = "https://api.igdb.com/v4/webhooks";
 
-export async function connectWebhooks() {
+export async function viewWebhooks() {
   // Setting up webhooks connection
   const client_id = process.env.IGDB_CLIENT_ID;
-  const host_url = process.env.HOST_URL;
 
   try {
     const accessToken = await getAccessToken();
 
-    const params = new URLSearchParams();
-    params.append("url", `${host_url}/api/igdb/webhook`);
-    params.append("secret", process.env.WEBHOOK_SECRET!);
-    params.append("method", "create");
-
-    const webhookResponse = await axios.post(url, params, {
+    const webhookResponse = await axios.get(url, {
       headers: {
         "Client-ID": client_id,
         Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/x-www-form-urlencoded",
       },
     });
     console.log(webhookResponse.data);
@@ -32,4 +25,4 @@ export async function connectWebhooks() {
   }
 }
 
-connectWebhooks();
+viewWebhooks();
