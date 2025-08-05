@@ -10,6 +10,7 @@ export async function viewWebhooks() {
 
   try {
     const accessToken = await getAccessToken();
+    console.log("Access Token:", accessToken);
 
     const webhookResponse = await axios.get(url, {
       headers: {
