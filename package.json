@@ -11,7 +11,8 @@
     "populate": "tsx src/helpers/populateDatabase.ts",
     "connect": "tsx src/helpers/connectWebhook.ts",
     "view": "tsx src/helpers/viewWebhook.ts",
-    "delete": "tsx src/helpers/deleteWebhook.ts"
+    "delete": "tsx src/helpers/deleteWebhook.ts",
+    "scores": "tsx src/helpers/getPopScore.ts"
   },
   "dependencies": {
     "agenda": "^5.0.0",

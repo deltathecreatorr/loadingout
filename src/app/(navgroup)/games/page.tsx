@@ -24,11 +24,7 @@ export default function Games() {
     const fetchGames = async () => {
       setLoading(true);
       try {
-        const response = await axios.post("/api/igdb/getGameData", {
-          url: "https://api.igdb.com/v4/games",
-          query:
-            "fields name, hypes, rating, summary, cover.url; sort hypes desc; where hypes > 0; limit 10;",
-        });
+        const response = await axios.get("/api/igdb/get24hrData");
         setGames(response.data.games);
       } catch (err: any) {
         setError("Failed to fetch games " + err);
@@ -37,9 +33,9 @@ export default function Games() {
         setLoading(false);
       }
     };
-
+    console.log(games);
     fetchGames();
-  }, []);
+  }, [error, games]);
 
   return (
     <div className="container mx-auto px-4 py-8">
