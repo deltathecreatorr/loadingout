@@ -13,8 +13,8 @@ const gameSchema = new mongoose.Schema(
     bundles: [Number],
     category: Number,
     cover: {
-      id: Number,
-      url: String,
+      reference_id: Number,
+      image_id: String,
     },
     created_at: Number,
     external_games: [Number],

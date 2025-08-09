@@ -4,18 +4,8 @@ import { Toaster } from "react-hot-toast";
 import axios from "axios";
 import Image from "next/image";
 
-export interface Game {
-  id: number;
-  name: string;
-  summary: string;
-  rating: number;
-  cover: {
-    url: string;
-  };
-}
-
 export default function Games() {
-  const [games, setGames] = React.useState<Game[]>([]);
+  const [games, setGames] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
 
@@ -25,7 +15,8 @@ export default function Games() {
       setLoading(true);
       try {
         const response = await axios.get("/api/igdb/get24hrData");
-        setGames(response.data.games);
+        setGames(response.data.data);
+        console.log(response);
       } catch (err: any) {
         setError("Failed to fetch games " + err);
         console.error(error);
@@ -35,7 +26,7 @@ export default function Games() {
     };
     console.log(games);
     fetchGames();
-  }, [error, games]);
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -57,22 +48,18 @@ export default function Games() {
   );
 }
 
-function GameCard({ game }: { game: Game }) {
+function GameCard({ game }: { game: any }) {
   return (
     <div className="relative card font-mono group h-full">
       {/* Background Image Container */}
       <figure className="relative w-[220px] h-[300px]">
         <Image
-          src={
-            game.cover?.url.startsWith("http")
-              ? game.cover.url
-              : `https:${game.cover?.url}`
-          }
-          alt={`${game.name} cover`}
+          src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover}.jpg`}
+          alt={`${game.name} Cover`}
           fill
           className="object-cover rounded-lg"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority={false} // Let Next.js optimize loading
+          priority
         />
       </figure>
 

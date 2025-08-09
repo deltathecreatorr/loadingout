@@ -46,10 +46,40 @@ export async function populateDatabase() {
         // Add each game to the database
 
         for (const gameData of games) {
+          const cover_query = `fields image_id; where game = ${gameData.cover};`;
+
+          const cover_response = await axios.post(
+            "https://api.igdb.com/v4/covers",
+            cover_query,
+            {
+              headers: {
+                "Client-ID": client_id,
+                Authorization: `Bearer ${accessToken}`,
+                Accept: "application/json",
+              },
+            }
+          );
+
           try {
             await Game.updateOne({ id: gameData.id }, gameData, {
               upsert: true,
             });
+
+            console.log(cover_response.data[0]);
+            console.log(cover_response.data[1]);
+
+            await Game.updateOne(
+              { id: gameData.id },
+              {
+                $set: {
+                  cover: {
+                    reference_id: gameData.cover, // The original cover reference ID
+                    image_id: cover_response.data[0]?.image_id || null,
+                  },
+                },
+              },
+              { upsert: true }
+            );
 
             gamesProcessed++;
           } catch (error) {
