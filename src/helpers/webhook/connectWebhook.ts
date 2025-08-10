@@ -1,10 +1,11 @@
 import axios from "axios";
 import "dotenv/config";
-import { getAccessToken } from "./getAccessToken";
+import { getAccessToken } from "../getAccessToken";
 
-const url = "https://api.igdb.com/v4/games/webhooks";
+type EntityType = "games" | "covers";
 
-export async function connectWebhooks() {
+export async function connectWebhooks(entity: EntityType) {
+  const url = `https://api.igdb.com/v4/${entity}/webhooks`;
   // Setting up webhooks connection
   const client_id = process.env.IGDB_CLIENT_ID;
   const host_url = process.env.HOST_URL;
@@ -45,4 +46,5 @@ export async function connectWebhooks() {
   }
 }
 
-connectWebhooks();
+connectWebhooks("games");
+connectWebhooks("covers");

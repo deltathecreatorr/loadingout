@@ -8,11 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "populate": "tsx src/helpers/populateDatabase.ts",
-    "connect": "tsx src/helpers/connectWebhook.ts",
-    "view": "tsx src/helpers/viewWebhook.ts",
-    "delete": "tsx src/helpers/deleteWebhook.ts",
-    "scores": "tsx src/helpers/getPopScore.ts"
+    "populate": "tsx src/helpers/database/populateDatabase.ts",
+    "connect": "tsx src/helpers/webhook/connectWebhook.ts",
+    "view": "tsx src/helpers/webhook/viewWebhook.ts",
+    "delete": "tsx src/helpers/webhook/deleteWebhook.ts"
   },
   "dependencies": {
     "agenda": "^5.0.0",

@@ -1,6 +1,6 @@
 import axios from "axios";
 import "dotenv/config";
-import { getAccessToken } from "./getAccessToken";
+import { getAccessToken } from "../getAccessToken";
 
 export async function deleteWebhook() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports

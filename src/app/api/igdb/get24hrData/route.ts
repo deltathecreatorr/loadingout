@@ -8,7 +8,8 @@ export async function GET() {
   try {
     console.log("Fetching 24hr data for popular games...");
 
-    const data = await Game.find().sort({ popularity_value: -1 }).limit(10);
+    const data = await Game.find().sort({ popularity_score: "desc" }).limit(10);
+
     console.log("Fetched 24hr data:", data);
     await mongoose.connection.close(); // Close the database connection
     return NextResponse.json({ data }, { status: 200 });
