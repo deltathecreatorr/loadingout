@@ -45,6 +45,6 @@ const coverSchema = new mongoose.Schema({
   },
 });
 
-const Cover = mongoose.model("Cover", coverSchema);
+const Cover = mongoose.models.Cover || mongoose.model("Cover", coverSchema);
 
 export default Cover;

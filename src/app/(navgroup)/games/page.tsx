@@ -6,6 +6,7 @@ import Image from "next/image";
 
 export default function Games() {
   const [games, setGames] = React.useState<any[]>([]);
+  const [covers, setCovers] = React.useState<any[]>([]);
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState("");
 
@@ -14,9 +15,16 @@ export default function Games() {
     const fetchGames = async () => {
       setLoading(true);
       try {
-        const response = await axios.get("/api/igdb/get24hrData");
-        setGames(response.data.data);
-        console.log(response);
+        const response = await axios.post("/api/igdb/gameData", {
+          filters: {},
+          sort: { aggregated_rating: "desc" },
+          limit: 10,
+        });
+        console.log(response.data);
+        setCovers(response.data.covers);
+        setGames(response.data.games);
+        console.log(covers);
+        console.log(games);
       } catch (err: any) {
         setError("Failed to fetch games " + err);
         console.error(error);
@@ -24,7 +32,6 @@ export default function Games() {
         setLoading(false);
       }
     };
-    console.log(games);
     fetchGames();
   }, []);
 
@@ -40,7 +47,7 @@ export default function Games() {
       ) : (
         <div className="flex overflow-x-scroll gap-4 pb-4 rounded-box w-full">
           {games.map((game) => (
-            <GameCard key={game.id} game={game} />
+            <GameCard key={game.id} game={game} covers={covers} />
           ))}
         </div>
       )}
@@ -48,18 +55,20 @@ export default function Games() {
   );
 }
 
-function GameCard({ game }: { game: any }) {
+function GameCard({ game, covers }: { game: any; covers: any[] }) {
+  const gameCover = covers.find((c) => c.game === game.id)?.image_id;
+
   return (
     <div className="relative card font-mono group h-full">
       {/* Background Image Container */}
       <figure className="relative w-[220px] h-[300px]">
         <Image
-          src={`https://images.igdb.com/igdb/image/upload/t_cover_big/${game.cover}.jpg`}
+          src={`https://images.igdb.com/igdb/image/upload/t_1080p/${gameCover}.jpg`}
           alt={`${game.name} Cover`}
           fill
           className="object-cover rounded-lg"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          priority
+          priority={false}
         />
       </figure>
 
