@@ -13,8 +13,11 @@ interface GameQuery {
 }
 
 export async function POST(request: NextRequest) {
-  await connectToDatabase();
   try {
+    if (mongoose.connection.readyState !== 1) {
+      await connectToDatabase();
+    }
+
     const query: GameQuery = await request.json();
     const games = await Game.find(query.filters || {})
       .sort(query.sort || {})
@@ -22,22 +25,23 @@ export async function POST(request: NextRequest) {
       .limit(query.limit || 20)
       .select(query.projection || {});
 
-    const coverIds = games
-      .map((game) => game.cover)
+    const gameIds = games
+      .map((game) => game.id)
       .filter(
-        (coverId): coverId is number =>
-          coverId !== undefined && coverId !== null
+        (gameId): gameId is number =>
+          typeof gameId === "number" && !isNaN(gameId) && gameId > 0
       );
 
-    const coverImages = await Cover.find({
-      id: { $in: coverIds }, // Assuming 'id' is the field name in Cover model
-    });
+    let coverImages = [];
+    if (gameIds.length > 0) {
+      coverImages = await Cover.find({
+        game: { $in: gameIds },
+      });
+    }
 
     return NextResponse.json({ games: games, covers: coverImages });
   } catch (error: any) {
     console.error("Error fetching game data:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
-  } finally {
-    await mongoose.connection.close();
   }
 }
