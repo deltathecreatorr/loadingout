@@ -2,6 +2,9 @@ import mongoose from "mongoose";
 
 // Creating the game Schema following the IGDB API structure from its Endpoint Structure
 // https://api-docs.igdb.com/#game
+/**
+ * Schema for game data.
+ */
 const gameSchema = new mongoose.Schema(
   {
     id: { type: Number, required: true, unique: true },

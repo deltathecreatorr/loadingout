@@ -3,6 +3,10 @@ import "dotenv/config";
 import { getAccessToken } from "../getAccessToken";
 
 const url = "https://api.igdb.com/v4/webhooks";
+/**
+ * Views the configured webhooks for the IGDB API.
+ * @returns An array of webhook objects or an error message.
+ */
 
 export async function viewWebhooks() {
   // Setting up webhooks connection

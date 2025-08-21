@@ -10,8 +10,16 @@ import { getAccessToken } from "../getAccessToken";
 
 const url = "https://api.igdb.com/v4/";
 
+/**
+ * Represents the type of entity for webhook connections, either games or covers.
+ */
 type EntityType = "games" | "covers";
 
+/**
+ * Populates the MongoDB database with data from the IGDB API.
+ * @param entity - The type of entity to populate (games or covers).
+ * @returns A promise that resolves when the database has been populated.
+ */
 export async function populateDatabase(entity: EntityType) {
   const client_id = process.env.IGDB_CLIENT_ID;
 

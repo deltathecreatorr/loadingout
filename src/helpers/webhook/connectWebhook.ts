@@ -2,8 +2,16 @@ import axios from "axios";
 import "dotenv/config";
 import { getAccessToken } from "../getAccessToken";
 
+/**
+ * Represents the type of entity for webhook connections, either games or covers.
+ */
 type EntityType = "games" | "covers";
 
+/**
+ * Connects webhooks for a specific entity type in the IGDB API.
+ * @param entity - The entity type (games or covers) to connect webhooks for.
+ * @returns An array of responses from the IGDB API or an error message.
+ */
 export async function connectWebhooks(entity: EntityType) {
   const url = `https://api.igdb.com/v4/${entity}/webhooks`;
   // Setting up webhooks connection

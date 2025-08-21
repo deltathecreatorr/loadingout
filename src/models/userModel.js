@@ -3,6 +3,9 @@
 import mongoose from "mongoose";
 
 // Each schema maps to a MongoDB collection, essentially a blueprint for how data is organised in the database.
+/**
+ * Schema for user data.
+ */
 const userSchema = new mongoose.Schema({
   username: {
     type: String,

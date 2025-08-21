@@ -7,6 +7,11 @@ connectToDatabase();
 
 //use nodemailer to send email to users that sign up with their email
 //the type of email to send is either RESET or VERIFY
+/**
+ * Sends a verification or password reset email to the user.
+ * @param object - An object containing email, emailType, and userId.
+ * @returns A promise that resolves to the email response.
+ */
 export async function sendMail({ email, emailType, userId }: any) {
   const hashedToken = await bcrypt.hash(userId.toString(), 10);
 

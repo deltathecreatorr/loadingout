@@ -1,7 +1,10 @@
 import axios from "axios";
 import "dotenv/config";
 import { getAccessToken } from "../getAccessToken";
-
+/**
+ * Deletes a webhook by its ID.
+ * @returns The response from the IGDB API or an error message.
+ */
 export async function deleteWebhook() {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   const prompt = require("prompt-sync")();

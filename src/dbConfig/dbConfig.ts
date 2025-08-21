@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 
+/**
+ * Connects to the MongoDB database.
+ * @returns A promise that resolves when the connection is established.
+ */
 export async function connectToDatabase() {
   if (mongoose.connection.readyState >= 1) {
     return;

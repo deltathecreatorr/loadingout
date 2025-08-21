@@ -1,6 +1,10 @@
 import axios from "axios";
 import "dotenv/config";
 
+/**
+ * Fetches an access token from the IGDB API.
+ * @returns The access token string or an error object.
+ */
 export async function getAccessToken() {
   const client_id = process.env.IGDB_CLIENT_ID;
   const client_secret = process.env.IGDB_CLIENT_SECRET;

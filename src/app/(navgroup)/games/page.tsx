@@ -82,7 +82,7 @@ export default function Games() {
                 },
               },
               sort: { first_release_date: "asc" },
-              limit: 10,
+              limit: 20,
             },
             name: "Coming Soon",
           },
@@ -152,14 +152,30 @@ export default function Games() {
 }
 
 function GameCard({ game, covers }: { game: any; covers: any[] }) {
-  const gameCover = covers.find((c) => c.game === game.id)?.image_id;
+  const gameCover = covers.find((c) => c.game === game.id);
+  const imageId = gameCover?.image_id;
+
+  const [imageSrc, setImageSrc] = useState(() => {
+    if (imageId) {
+      return `https://images.igdb.com/igdb/image/upload/t_1080p/${imageId}.jpg`;
+    }
+    return "";
+  });
+
+  useEffect(() => {
+    if (imageId) {
+      setImageSrc(
+        `https://images.igdb.com/igdb/image/upload/t_1080p/${imageId}.jpg`
+      );
+    }
+  }, [imageId]);
 
   return (
     <div className="relative card font-mono group h-full">
       {/* Background Image Container */}
       <figure className="relative w-[220px] h-[300px]">
         <Image
-          src={`https://images.igdb.com/igdb/image/upload/t_1080p/${gameCover}.jpg`}
+          src={imageSrc}
           alt={`${game.name} Cover`}
           fill
           className="object-cover rounded-lg"

@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
-
+/**
+ * This schema defines the structure of the cover image documents
+ * stored in the MongoDB database.
+ */
 const coverSchema = new mongoose.Schema({
   alpha_channel: {
     type: Boolean,
