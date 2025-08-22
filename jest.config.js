@@ -1,6 +1,9 @@
 module.exports = {
   // Use ts-jest preset for testing TypeScript files with Jest
   preset: "ts-jest",
+  preset: "@shelf/jest-mongodb",
+
+  setupFilesAfterEnv: ["<rootDir>/src/tests/testDBSetup.ts"],
   // Set the test environment to Node.js
   testEnvironment: "node",
 

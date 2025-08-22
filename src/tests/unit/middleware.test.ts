@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { middleware } from "../middleware";
+import { middleware } from "@/middleware";
 import type { NextRequest } from "next/server";
 
 const mockNextRequest = (url: string, token?: string): NextRequest => {
