@@ -3,7 +3,10 @@ module.exports = {
   preset: "ts-jest",
   preset: "@shelf/jest-mongodb",
 
-  setupFilesAfterEnv: ["<rootDir>/src/tests/testDBSetup.ts"],
+  setupFilesAfterEnv: [
+    "<rootDir>/src/tests/testDBSetup.ts",
+    "<rootDir>/src/tests/testUtilities.ts",
+  ],
   // Set the test environment to Node.js
   testEnvironment: "node",
 

@@ -26,6 +26,21 @@ export async function POST(request: NextRequest) {
 
     //use query to find games based on criteria
     const query: GameQuery = await request.json();
+
+    if (query.filters) {
+      const validationError = validateFilters(query.filters);
+      if (validationError) {
+        return NextResponse.json({ error: validationError }, { status: 400 });
+      }
+    }
+
+    if (query.sort) {
+      const validationError = validateSortFields(query.sort);
+      if (validationError) {
+        return NextResponse.json({ error: validationError }, { status: 400 });
+      }
+    }
+
     const games = await Game.find(query.filters || {})
       .sort(query.sort || {})
       .skip(query.skip || 0)
@@ -51,6 +66,75 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ games: games, covers: coverImages });
   } catch (error: any) {
     console.error("Error fetching game data:", error);
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 400 });
   }
+}
+
+function validateFilters(filters: Record<string, any>): string | null {
+  const validFields = getGameModelFields();
+
+  for (const field in filters) {
+    const baseField = field.replace(/\$.*$/, "");
+
+    if (!validFields.includes(baseField) && !isMongoOperator(field)) {
+      return `Invalid filter field: ${field}`;
+    }
+
+    if (typeof filters[field] !== "object" && filters[field] === null) {
+      return `Invalid filter value for field: ${field}`;
+    }
+  }
+
+  return null;
+}
+
+function validateSortFields(
+  sort: Record<string, "asc" | "desc">
+): string | null {
+  const validFields = getGameModelFields();
+
+  for (const field in sort) {
+    if (!validFields.includes(field)) {
+      return `Invalid sort field: ${field}`;
+    }
+  }
+
+  return null;
+}
+
+function getGameModelFields(): string[] {
+  const schemaPaths = Game.schema.paths;
+  return Object.keys(schemaPaths).filter(
+    (key) => !key.startsWith("_") && key !== "__v"
+  );
+}
+
+function isMongoOperator(field: string): boolean {
+  const mongoOperators = [
+    "$eq",
+    "$ne",
+    "$gt",
+    "$gte",
+    "$lt",
+    "$lte",
+    "$in",
+    "$nin",
+    "$and",
+    "$or",
+    "$not",
+    "$nor",
+    "$exists",
+    "$type",
+    "$expr",
+    "$jsonSchema",
+    "$mod",
+    "$regex",
+    "$text",
+    "$where",
+    "$geoIntersects",
+    "$geoWithin",
+    "$near",
+    "$nearSphere",
+  ];
+  return mongoOperators.includes(field);
 }
