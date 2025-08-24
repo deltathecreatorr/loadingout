@@ -19,6 +19,16 @@ export async function connectWebhooks(entity: EntityType) {
   const host_url = process.env.HOST_URL;
 
   try {
+    if (!client_id || !host_url) {
+      throw new Error(
+        "Missing required environment variables, CLIENT_ID or HOST_URL"
+      );
+    }
+
+    if (!process.env.WEBHOOK_SECRET) {
+      throw new Error("Missing required environment variable, WEBHOOK_SECRET");
+    }
+
     const accessToken = await getAccessToken();
 
     const headers = {
@@ -35,14 +45,22 @@ export async function connectWebhooks(entity: EntityType) {
 
     const responses = await Promise.all(
       webhookMethods.map(async ({ method, path }) => {
-        const params = new URLSearchParams();
-        params.append("url", `${host_url}${path}`);
-        params.append("secret", process.env.WEBHOOK_SECRET!);
-        params.append("method", method);
+        try {
+          const params = new URLSearchParams();
+          params.append("url", `${host_url}${path}`);
+          params.append("secret", process.env.WEBHOOK_SECRET!);
+          params.append("method", method);
 
-        const response = await axios.post(url, params, { headers });
+          const response = await axios.post(url, params, { headers });
 
-        return response;
+          return response;
+        } catch (error) {
+          console.error(
+            `Error connecting ${entity} webhook (${method}):`,
+            error
+          );
+          return { error: `Failed to connect ${entity} webhook (${method})` };
+        }
       })
     );
 
