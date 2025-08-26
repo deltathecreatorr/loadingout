@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AxiosResponse } from "axios";
 import MockAdapter from "axios-mock-adapter";
 import { connectWebhooks } from "@/helpers/webhook/connectWebhook";
 import { getAccessToken } from "@/helpers/getAccessToken";
@@ -28,6 +29,7 @@ describe("connectWebhooks", () => {
 
   afterAll(() => {
     mock.restore();
+    jest.clearAllMocks();
   });
 
   describe("Expected Successful Behaviour", () => {
@@ -43,7 +45,7 @@ describe("connectWebhooks", () => {
       expect(Array.isArray(result)).toBe(true);
       if (Array.isArray(result)) {
         expect(result).toHaveLength(3);
-        expect(result[0].status).toBe(200);
+        expect((result[0] as AxiosResponse).status).toBe(200);
       }
     });
 
@@ -109,6 +111,65 @@ describe("connectWebhooks", () => {
       expect(mock.history.post[3].url).toBe(
         "https://api.igdb.com/v4/covers/webhooks"
       );
+    });
+  });
+
+  describe("Error Handling", () => {
+    it("should handle individual webhook connection failures", async () => {
+      process.env.IGDB_CLIENT_ID = "test-client-id";
+      process.env.HOST_URL = "https://test-host.com";
+      process.env.WEBHOOK_SECRET = "test-secret";
+
+      mockedGetAccessToken.mockResolvedValue("test-access-token");
+
+      mock
+        .onPost("https://api.igdb.com/v4/games/webhooks")
+        .replyOnce(500, { error: "Internal Server Error" });
+      mock
+        .onPost("https://api.igdb.com/v4/games/webhooks")
+        .replyOnce(200, { success: true });
+      mock
+        .onPost("https://api.igdb.com/v4/games/webhooks")
+        .replyOnce(200, { success: true });
+
+      const result = await connectWebhooks("games");
+
+      expect(Array.isArray(result)).toBe(true);
+      if (Array.isArray(result)) {
+        expect(result).toHaveLength(3);
+
+        expect(result[0]).toEqual({
+          error: "Failed to connect games webhook (create)",
+        });
+
+        expect((result[1] as AxiosResponse).status).toBe(200);
+        expect((result[1] as AxiosResponse).data).toEqual({ success: true });
+
+        expect((result[2] as AxiosResponse).status).toBe(200);
+        expect((result[2] as AxiosResponse).data).toEqual({ success: true });
+      }
+    });
+
+    it("should handle getAccessToken failure", async () => {
+      mockedGetAccessToken.mockRejectedValue(
+        new Error("Failed to get access token")
+      );
+
+      const result = await connectWebhooks("games");
+
+      expect(result).toEqual({ error: "Failed to set up webhooks" });
+    });
+
+    it("should handle empty environment variables", async () => {
+      delete process.env.IGDB_CLIENT_ID;
+      delete process.env.HOST_URL;
+      delete process.env.WEBHOOK_SECRET;
+
+      const result = await connectWebhooks("games");
+
+      expect(result).toEqual({
+        error: "Failed to set up webhooks",
+      });
     });
   });
 });
