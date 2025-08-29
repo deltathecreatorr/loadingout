@@ -15,6 +15,7 @@ jobs:
       IGDB_CLIENT_SECRET: ${{ secrets.IGDB_CLIENT_SECRET }}
       IGDB_CLIENT_ID: ${{ secrets.IGDB_CLIENT_ID }}
       HOST_URL: ${{ secrets.HOST_URL }}
+      WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
 
     steps:
       - uses: actions/checkout@v3
