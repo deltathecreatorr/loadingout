@@ -5,7 +5,7 @@ import { getAccessToken } from "../getAccessToken";
 /**
  * Represents the type of entity for webhook connections, either games or covers.
  */
-type EntityType = "games" | "covers";
+export type EntityType = "games" | "covers";
 
 /**
  * Connects webhooks for a specific entity type in the IGDB API.

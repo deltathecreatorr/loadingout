@@ -25,7 +25,7 @@ export async function viewWebhooks() {
     return webhookResponse.data;
   } catch (error: any) {
     console.error("Error setting up webhooks:", error);
-    return { error: "Failed to set up webhooks" };
+    return { error: "Failed to retrieve webhooks" };
   }
 }
 
