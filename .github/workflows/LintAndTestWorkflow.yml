@@ -11,6 +11,10 @@ jobs:
       matrix:
         node-version: [20.9]
 
+    env:
+      IGDB_CLIENT_SECRET: ${{ secrets.IGDB_CLIENT_SECRET }}
+      IGDB_CLIENT_ID: ${{ secrets.IGDB_CLIENT_ID }}
+
     steps:
       - uses: actions/checkout@v3
       - name: Set up Node.js ${{ matrix.node-version}}
