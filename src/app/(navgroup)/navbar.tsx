@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { useState } from "react";
 
-export default function Navbar({ isVerified }: { isVerified: boolean }) {
+export default function Navigation({ isVerified }: { isVerified: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const navbarItems: string[] = [];
   const toggleMenu = () => {
@@ -16,7 +16,7 @@ export default function Navbar({ isVerified }: { isVerified: boolean }) {
   }
 
   return (
-    <nav
+    <div
       className="w-full max-w-screen px-4 py-4 mx-auto flex top-0 left-0 z-50 menu-toggle justify-center"
       onClick={toggleMenu}
     >
@@ -37,6 +37,6 @@ export default function Navbar({ isVerified }: { isVerified: boolean }) {
           );
         })}
       </ul>
-    </nav>
+    </div>
   );
 }

@@ -7,7 +7,7 @@ export default function Home() {
     <main className="flex flex-col">
       <Toaster position="top-left" reverseOrder={false} />
       <div className="grow p-8">
-        <div className="grow text-xl text-black font-mono">
+        <div className="nes-container grow text-xl text-black font-mono">
           <p className="text-4xl">Loadout?</p>
           <p>
             Loadout is your place to track your game collection and manage your
@@ -15,6 +15,9 @@ export default function Home() {
             play with others. Register an account to get started!
           </p>
         </div>
+        <button type="button" className="nes-btn">
+          Register
+        </button>
       </div>
     </main>
   );

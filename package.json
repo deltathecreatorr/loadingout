@@ -22,6 +22,7 @@
     "email-validator": "^2.0.4",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.0",
+    "nes.css": "^2.2.1",
     "next": "15.5.2",
     "nodemailer": "^7.0.6",
     "react": "^19.1.1",

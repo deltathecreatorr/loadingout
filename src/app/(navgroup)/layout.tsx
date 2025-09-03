@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "./logo";
-import Navbar from "./navbar";
+import Navigation from "./navbar";
 import axios from "axios";
 
 export default function NavbarLayout({
@@ -33,7 +33,7 @@ export default function NavbarLayout({
       <div className="flex flex-col justify-center items-center pt-4">
         <Logo />
       </div>
-      <Navbar isVerified={isUserVerified} />
+      <Navigation isVerified={isUserVerified} />
       {children}
     </div>
   );
