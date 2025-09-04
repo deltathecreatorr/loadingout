@@ -1,3 +1,5 @@
+import path from "path";
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
@@ -18,6 +20,9 @@ const nextConfig: NextConfig = {
         pathname: "/igdb/image/upload/**",
       },
     ],
+  },
+  turbopack: {
+    root: __dirname,
   },
 };
 

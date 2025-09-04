@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import Logo from "./logo";
 import Navigation from "./navbar";
+import Footer from "./footer";
 import axios from "axios";
 
 export default function NavbarLayout({
@@ -29,12 +30,13 @@ export default function NavbarLayout({
   }, [pathname]); // Re-run when route changes
 
   return (
-    <div className="min-h-screen bg-gradient-to-t from-black to-purple-600">
+    <div className="min-h-screen">
       <div className="flex flex-col justify-center items-center pt-4">
         <Logo />
       </div>
       <Navigation isVerified={isUserVerified} />
       {children}
+      <Footer />
     </div>
   );
 }

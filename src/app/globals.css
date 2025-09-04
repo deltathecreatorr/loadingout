@@ -30,6 +30,17 @@
   src: url("../../public/fonts/ThaleahFat.ttf") format("truetype");
 }
 
+:-moz-focusring,
+:focus,
+button::-moz-focus-inner,
+:-moz-focusring *,
+:focus * {
+  outline: revert !important;
+  outline-offset: revert !important;
+  -moz-outline-radius: revert !important;
+  box-shadow: revert !important;
+}
+
 a {
   color: black;
   text-decoration: none;
@@ -41,7 +52,19 @@ a:hover {
 }
 
 body {
-  background: var(--background);
+  background: url(../../public/background/orig_big.webp) repeat-x;
+  background-size: auto 100%;
+  background-position: 0 0;
   color: var(--foreground);
   font-family: PixelFont, Arial, Helvetica, sans-serif;
+  animation: animate-bg 30s infinite linear;
+}
+
+@keyframes animate-bg {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -2304px;
+  }
 }
