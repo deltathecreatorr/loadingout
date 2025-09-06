@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { Toaster } from "react-hot-toast";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 
 interface GameQuery {
@@ -152,6 +153,7 @@ export default function Games() {
 }
 
 function GameCard({ game, covers }: { game: any; covers: any[] }) {
+  const router = useRouter();
   const gameCover = covers.find((c) => c.game === game.id);
   const imageId = gameCover?.image_id;
 
@@ -201,7 +203,10 @@ function GameCard({ game, covers }: { game: any; covers: any[] }) {
           </span>
         </div>
         <div className="card-actions justify-end">
-          <button className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-black rounded-lg group bg-gradient-to-br from-purple-600 to-black-500 group-hover:from-purple-600 group-hover:to-purple-800 hover:text-black dark:text-black">
+          <button
+            className="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-black rounded-lg group bg-gradient-to-br from-purple-600 to-black-500 group-hover:from-purple-600 group-hover:to-purple-800 hover:text-black dark:text-black"
+            onClick={() => router.push(`/game_page?id=${game.id}`)}
+          >
             <span className="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
               See More
             </span>
