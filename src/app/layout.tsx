@@ -25,9 +25,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <div className="min-h-screen bg-gradient-to-t from-purple-600 to-purple-800">
-          {children}
+        <div className="fixed top-0 left-0 w-[200%] h-full flex -z-10">
+          <div className="w-1/2 h-full bg-[url('../../public/background/orig_big.webp')] bg-no-repeat bg-auto bg-top animate-scroll-left"></div>
+          <div className="w-1/2 h-full bg-[url('../../public/background/orig_big.webp')] bg-no-repeat bg-auto bg-top animate-scroll-left"></div>
         </div>
+        <div className="relative min-h-screen">{children}</div>
       </body>
     </html>
   );

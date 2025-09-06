@@ -1,3 +1,4 @@
+@import "nes.css/css/nes.min.css";
 @import "tailwindcss";
 @plugin "daisyui";
 
@@ -29,8 +30,43 @@
   src: url("../../public/fonts/ThaleahFat.ttf") format("truetype");
 }
 
+:-moz-focusring,
+:focus,
+button::-moz-focus-inner,
+:-moz-focusring *,
+:focus * {
+  outline: revert !important;
+  outline-offset: revert !important;
+  -moz-outline-radius: revert !important;
+  box-shadow: revert !important;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
+  text-decoration: none;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
+  margin: 0;
+  background-color: transparent;
   font-family: PixelFont, Arial, Helvetica, sans-serif;
+  color: var(--foreground);
+}
+
+@keyframes scroll-left {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 30s linear infinite;
 }
