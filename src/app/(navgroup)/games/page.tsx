@@ -173,7 +173,7 @@ function GameCard({ game, covers }: { game: any; covers: any[] }) {
   return (
     <div className="relative card font-mono group h-full">
       {/* Background Image Container */}
-      <figure className="relative w-[220px] h-[300px]">
+      <div className="relative w-[220px] h-[300px]">
         <Image
           src={imageSrc}
           alt={`${game.name} Cover`}
@@ -182,7 +182,7 @@ function GameCard({ game, covers }: { game: any; covers: any[] }) {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           priority={false}
         />
-      </figure>
+      </div>
 
       {/* Overlay Content */}
       <div className="card-body opacity-0 invisible rounded-lg group-hover:opacity-100 group-hover:visible transition-all duration-300 bg-black/70 absolute inset-0 flex flex-col justify-end p-4">
