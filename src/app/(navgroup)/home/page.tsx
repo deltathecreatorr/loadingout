@@ -65,18 +65,20 @@ export default function Home() {
           </div>
         </div>
         <div>
-          <div className="grid grid-flow-col gap-5 text-center justify-center auto-rows-min auto-cols-max p-4">
-            <div className="flex flex-col p-2 bg-purple-800 rounded-box">
-              <span className="countdown justify-center text-6xl">
-                <>{gameCount}</>
-              </span>
-              <div className="text-4xl">Games Available</div>
-            </div>
-            <div className="flex flex-col p-2 bg-purple-800 rounded-box">
-              <span className="countdown justify-center text-6xl">
-                <>{userCount}</>
-              </span>
-              <div className="text-4xl">Users</div>
+          <div className="flex justify-center p-4">
+            <div className="grid grid-cols-2 gap-5 w-full text-center max-w-xl">
+              <div className="flex flex-col p-4 bg-purple-800 rounded-box">
+                <span className="countdown justify-center text-6xl">
+                  <>{gameCount}</>
+                </span>
+                <div className="text-4xl">Games Available</div>
+              </div>
+              <div className="flex flex-col p-4 bg-purple-800 rounded-box">
+                <span className="countdown justify-center text-6xl">
+                  <>{userCount}</>
+                </span>
+                <div className="text-4xl">Users Reviewing Games</div>
+              </div>
             </div>
           </div>
         </div>

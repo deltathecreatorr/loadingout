@@ -14,6 +14,10 @@ export default function Footer() {
         className="nes-icon github is-large"
         href="https://github.com/deltathecreatorr"
       ></a>
+      <a
+        className="nes-icon linkedin is-large"
+        href="https://www.linkedin.com/in/julio-anandaraaj-developer"
+      ></a>
     </footer>
   );
 }

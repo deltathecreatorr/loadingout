@@ -52,19 +52,21 @@ a:hover {
 }
 
 body {
-  background: url(../../public/background/orig_big.webp) repeat-x;
-  background-size: auto 100%;
-  background-position: 0 0;
-  color: var(--foreground);
+  margin: 0;
+  background-color: transparent;
   font-family: PixelFont, Arial, Helvetica, sans-serif;
-  animation: animate-bg 30s infinite linear;
+  color: var(--foreground);
 }
 
-@keyframes animate-bg {
+@keyframes scroll-left {
   from {
-    background-position-x: 0;
+    transform: translateX(0);
   }
   to {
-    background-position-x: -2304px;
+    transform: translateX(-100%);
   }
+}
+
+.animate-scroll-left {
+  animation: scroll-left 30s linear infinite;
 }

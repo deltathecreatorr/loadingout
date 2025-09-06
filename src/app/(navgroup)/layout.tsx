@@ -30,7 +30,7 @@ export default function NavbarLayout({
   }, [pathname]); // Re-run when route changes
 
   return (
-    <div className="min-h-screen">
+    <div>
       <div className="flex flex-col justify-center items-center pt-4">
         <Logo />
       </div>
