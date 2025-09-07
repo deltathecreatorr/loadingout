@@ -192,7 +192,9 @@ function GameCard({ game, covers }: { game: any; covers: any[] }) {
           {game.name}
         </h2>
         {game.summary && (
-          <p className="text-white text-sm line-clamp-3 mb-2">{game.summary}</p>
+          <p className="text-white text-sm line-clamp-3 overflow-scroll">
+            {game.summary}
+          </p>
         )}
         <div className="flex items-center mb-2">
           <span className="text-yellow-500 mr-1">★</span>
