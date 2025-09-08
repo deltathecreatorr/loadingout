@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import axios from "axios";
 import Image from "next/image";
@@ -12,20 +12,17 @@ interface GameQuery {
   skip?: number;
   projection?: Record<string, 1>;
 }
-interface GameResponse {
-  query_name: string;
-  games: any[];
-  covers: any[];
-  error?: string;
-}
 
 export default function GamePage() {
   const searchParam = useSearchParams();
   const gameId = searchParam.get("id");
+  const cover_ref = useRef<HTMLDivElement>(null);
+  const [resizeTrigger, setResizeTrigger] = useState(0);
 
   const [gameData, setGameData] = useState<any>(null);
   const [coverData, setCoverData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [cover_height, setCoverHeight] = useState(0);
 
   async function fetchGameData() {
     setLoading(true);
@@ -40,6 +37,7 @@ export default function GamePage() {
       if (response.data.games.length > 0) {
         const game = response.data.games[0];
         const cover = response.data.covers[0];
+        console.log(response.data);
         setCoverData(cover);
         setGameData(game);
       }
@@ -56,24 +54,66 @@ export default function GamePage() {
     }
   }, [gameId]);
 
-  return (
+  useEffect(() => {
+    const updateHeight = () => {
+      if (cover_ref.current) {
+        setCoverHeight(cover_ref.current.clientHeight);
+      }
+    };
+    updateHeight();
+    const resizeObserver = new ResizeObserver(updateHeight);
+
+    if (cover_ref.current) {
+      resizeObserver.observe(cover_ref.current);
+    }
+    const intervalId = setInterval(updateHeight, 500);
+    return () => {
+      resizeObserver.disconnect();
+      clearInterval(intervalId);
+    };
+  }, [coverData, resizeTrigger]);
+
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => setResizeTrigger((prev) => prev + 1), 100);
+    }
+  }, [loading]);
+
+  return loading ? (
+    <div className="text-5xl text-yellow-500 flex justify-center">
+      Loading your game...
+      <i className="snes-logo"></i>
+    </div>
+  ) : (
     <div className="flex flex-row justify-center">
       <div className="nes-container is-dark is-centered max-w-3xl">
         <h1 className="text-4xl">{gameData?.name}</h1>
         <div className="flex flex-row gap-4 items-start">
-          {/* Cover image on the right */}
           {coverData?.image_id && (
-            <div className="relative nes-container is-dark is-centered is-rounded min-w-[40%] aspect-[3/4] flex-shrink-0">
+            <div
+              ref={cover_ref}
+              className="relative nes-container is-rounded min-w-[40%] aspect-[3/4] flex-shrink-0"
+            >
               <Image
                 src={`https://images.igdb.com/igdb/image/upload/t_1080p/${coverData.image_id}.jpg`}
                 alt={`${gameData?.name} Cover`}
                 fill
                 className="object-cover"
+                onLoad={() =>
+                  setTimeout(() => setResizeTrigger((prev) => prev + 1), 100)
+                }
               />
             </div>
           )}
-          <div className="flex min-w-0 font-mono container overflow-scroll">
-            <p className="text-base">{gameData?.summary}</p>
+          <div className="flex flex-col">
+            <div
+              className="overflow-y-auto flex-grow mt-[3%]"
+              style={{
+                maxHeight: cover_height > 0 ? `${cover_height}px` : "none",
+              }}
+            >
+              <p className="font-mono text-md">{gameData?.summary}</p>
+            </div>
           </div>
         </div>
         <div className="text-6xl text-yellow-500 mb-4">
