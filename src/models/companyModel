@@ -1,0 +1,33 @@
+import mongoose from "mongoose";
+
+const companySchema = new mongoose.Schema({
+  checksum: {
+    type: String,
+    required: true,
+  },
+  description: {
+    type: String,
+  },
+  developed: [Number],
+  logo: {
+    type: Number,
+  },
+  name: {
+    type: String,
+    required: true,
+  },
+  id: {
+    type: Number,
+    required: true,
+    unique: true,
+  },
+  published: [Number],
+  slug: {
+    type: String,
+  },
+});
+
+const company =
+  mongoose.models.company || mongoose.model("company", companySchema);
+
+export default company;
